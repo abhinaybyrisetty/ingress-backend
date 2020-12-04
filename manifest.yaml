@@ -1,0 +1,37 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: custom-default-backend
+spec:
+  selector:
+    name: custom-default-backend
+  ports:
+  - port: 80
+    targetPort: 80
+    name: http
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: custom-default-backend
+  labels:
+    name: custom-default-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: custom-default-backend
+  template:
+    metadata:
+      labels:
+        name: custom-default-backend
+    spec:
+      containers:
+      - name: custom-default-backend
+        # Don't forget to edit the line below
+        image: abhinaybyrisetty/custom-default-backend:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
